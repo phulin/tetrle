@@ -39,6 +39,7 @@ interface State {
   lastWord: string
   tickMs: number
   clearMs: number
+  clears: number
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -96,6 +97,7 @@ function initState(): State {
     lastWord: '',
     tickMs: 0,
     clearMs: 0,
+    clears: 0,
   }
 }
 
@@ -270,6 +272,7 @@ function trySubmitWord(): void {
   gs = {
     ...gs,
     p2Score: gs.p2Score + score,
+    clears: gs.clears + 1,
     path: [],
     clearing: clearSet,
     clearMs: CLEAR_MS,
@@ -392,7 +395,8 @@ function update(time: number) {
 
       // Gravity: auto-fall tick
       gs = { ...gs, tickMs: gs.tickMs + dt }
-      const interval = cur1.down ? FAST_TICK_MS : TICK_MS
+      const baseInterval = Math.max(80, TICK_MS - gs.clears * 15)
+      const interval = cur1.down ? FAST_TICK_MS : baseInterval
       while (gs.tickMs >= interval && gs.phase === 'playing') {
         gs = { ...gs, tickMs: gs.tickMs - interval }
         const nr2 = gs.fRow + 1
