@@ -395,7 +395,7 @@ function update(time: number) {
 
       // Gravity: auto-fall tick
       gs = { ...gs, tickMs: gs.tickMs + dt }
-      const baseInterval = Math.max(80, TICK_MS - gs.clears * 15)
+      const baseInterval = Math.max(80, TICK_MS - gs.clears * 5)
       const interval = cur1.down ? FAST_TICK_MS : baseInterval
       while (gs.tickMs >= interval && gs.phase === 'playing') {
         gs = { ...gs, tickMs: gs.tickMs - interval }
